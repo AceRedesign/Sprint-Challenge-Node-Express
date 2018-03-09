@@ -11,15 +11,25 @@ const {
 } = require("../models/coinApi.js");
 
 router.get("/current", (req, res) => {
-  coinApiCurrent();
+  coinApiCurrent().then(json => {
+    res.send(json);
+  });
 });
 
 router.get("/previous", (req, res) => {
-  coinApiPrevious();
+  coinApiPrevious().then(json => {
+    res.send(json);
+  });
 });
 
 router.get("/compare", (req, res) => {
-  coinApiCompare();
+  coinApiCompare().then(json => {
+    res.json(json);
+  });
 });
 
 module.exports = router;
+
+//Working
+const dank = "nice";
+console.log(nice);
