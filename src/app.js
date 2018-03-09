@@ -3,8 +3,8 @@ const bodyParser = require("body-parser");
 const fetch = require("node-fetch");
 
 const server = express();
-const bodyParser = require("body-parser");
 
+const PORT = 3000;
 const STATUS_ERROR = 422;
 const STATUS_SUCCESS = 200;
 
@@ -23,6 +23,30 @@ server.get("/current", (req, res) => {
     .catch(err => {
       res.status(STATUS_ERROR);
       res.json({ error: err });
+    });
+});
+
+server.get("/previous", (req, res) => {
+  fetch(previousPrice)
+    .then(res => res.json())
+    .then(json => {
+      console.log(json);
+      res.status(STATUS_SUCCESS);
+      res.json(json);
+    })
+    .catch(err => {
+      res.status(STATUS_ERROR);
+      res.json({ error: err });
+    });
+});
+
+server.get("/compare", (req, res) => {
+  let recentPrice = recentPrice;
+  let previousPrice = previousPrice;
+  fetch(recentPrice)
+    .then(res => res.json())
+    .then(json => {
+      console.log(json);
     });
 });
 
