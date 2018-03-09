@@ -41,12 +41,35 @@ server.get("/previous", (req, res) => {
 });
 
 server.get("/compare", (req, res) => {
-  let recentPrice = recentPrice;
-  let previousPrice = previousPrice;
-  fetch(recentPrice)
+  let current = recentPrice;
+  let previous = previousPrice;
+  fetch(current)
     .then(res => res.json())
     .then(json => {
-      console.log(json);
+      currentPrice = json.bpi.USD.rate_float;
+      console.log(currentPrice);
+      fetch(previous)
+        .then(res => res.json())
+        .then(result => {
+          result = Object.values(result.bpi)[0];
+          console.log(result);
+          const compared = Number(currentPrice - result);
+          console.log(compared);
+          res.status(STATUS_SUCCESS);
+          if (compared < 0) {
+            res.json({ decreased: compared });
+          } else {
+            res.json({ increased: compared });
+          }
+        });
+    })
+    .catch(err => {
+      res.status(STATUS_ERROR);
+      res.send({ error: err });
+    })
+    .catch(err => {
+      res.status(STATUS_ERROR);
+      res.send({ error: err });
     });
 });
 
